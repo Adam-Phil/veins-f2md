@@ -13,6 +13,21 @@
 
 Define_Module(JosephVeinsApp);
 
+std::set<std::string> split(std::string s, std::string delimiter) {
+    size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+    std::string token;
+    std::set<std::string> res;
+
+    while ((pos_end = s.find(delimiter, pos_start)) != std::string::npos) {
+        token = s.substr (pos_start, pos_end - pos_start);
+        pos_start = pos_end + delim_len;
+        res.insert(token);
+    }
+
+    res.insert(s.substr (pos_start));
+    return res;
+}
+
 void JosephVeinsApp::initialize(int stage)
 {
 
@@ -48,6 +63,7 @@ void JosephVeinsApp::initialize(int stage)
         params.MixLocalAttacks = par("MixLocalAttacks");
         params.RandomLocalMix = par("RandomLocalMix");
 
+        params.LOCAL_ATTACK_LIST = par("LOCAL_ATTACK_LIST").stdstringValue();
         params.LOCAL_ATTACKER_PROB = par("LOCAL_ATTACKER_PROB");
         params.LOCAL_ATTACK_TYPE = attackTypes::intAttacks[par("LOCAL_ATTACK_TYPE").intValue()];
 
@@ -374,25 +390,28 @@ void JosephVeinsApp::initialize(int stage)
         } break;
         case mbTypes::LocalAttacker: {
             //attack-------------------------------
+            std::set<std::string> revoc = split(params.LOCAL_ATTACK_LIST,",");
             if (params.UseAttacksServer) {
                 myAttackType = localAttackServer.getNextAttack();
             }
             else if (params.MixLocalAttacks) {
                 int AtLiSize = sizeof(params.MixLocalAttacksList) / sizeof(params.MixLocalAttacksList[0]);
                 int localAttackIndex = 0;
-                if (params.RandomLocalMix) {
-                    localAttackIndex = genLib.RandomInt(0, AtLiSize - 1);
-                }
-                else {
-                    if (LastLocalAttackIndex < (AtLiSize - 1)) {
-                        localAttackIndex = LastLocalAttackIndex + 1;
-                        LastLocalAttackIndex = localAttackIndex;
+                do {
+                    if (params.RandomLocalMix) {
+                        localAttackIndex = genLib.RandomInt(0, AtLiSize - 1);
                     }
                     else {
-                        localAttackIndex = 0;
-                        LastLocalAttackIndex = 0;
+                        if (LastLocalAttackIndex < (AtLiSize - 1)) {
+                            localAttackIndex = LastLocalAttackIndex + 1;
+                            LastLocalAttackIndex = localAttackIndex;
+                        }
+                        else {
+                            localAttackIndex = 0;
+                            LastLocalAttackIndex = 0;
+                        }
                     }
-                }
+                } while(!revoc.count(std::to_string(localAttackIndex)));
                 myAttackType = params.MixLocalAttacksList[localAttackIndex];
             }
             else {
@@ -481,7 +500,7 @@ void JosephVeinsApp::setMDApp(mdAppTypes::App appTypeV1,
     case mdAppTypes::ThresholdApp:
         AppV1 = &ThreV1;
         break;
-    case mdAppTypes::AggrigationApp:
+    case mdAppTypes::AggregationApp:
         AppV1 = &AggrV1;
         break;
     case mdAppTypes::BehavioralApp:
@@ -505,7 +524,7 @@ void JosephVeinsApp::setMDApp(mdAppTypes::App appTypeV1,
     case mdAppTypes::ThresholdApp:
         AppV2 = &ThreV2;
         break;
-    case mdAppTypes::AggrigationApp:
+    case mdAppTypes::AggregationApp:
         AppV2 = &AggrV2;
         break;
     case mdAppTypes::BehavioralApp:
@@ -657,7 +676,6 @@ void JosephVeinsApp::LocalMisbehaviorDetection(BasicSafetyMessage* bsm,
 
     unsigned long senderPseudo = bsm->getSenderPseudonym();
     bsm->getArrivalTime();
-
     switch (version) {
     case 1: {
         std::string mdv = "V1";

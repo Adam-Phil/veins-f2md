@@ -23,7 +23,7 @@
 using namespace std;
 using namespace boost;
 
-AggrigationApp::AggrigationApp(int version,double Threshold ,double devValue, double deltaTrustTime,
+AggregationApp::AggregationApp(int version,double Threshold, double devValue, double deltaTrustTime,
         int maxBsmTrustNum) :
         MDApplication(version) {
     this->Threshold = Threshold;
@@ -32,7 +32,7 @@ AggrigationApp::AggrigationApp(int version,double Threshold ,double devValue, do
     this->maxBsmTrustNum = maxBsmTrustNum;
 }
 
-bool AggrigationApp::CheckNodeForReport(unsigned long myPseudonym,
+bool AggregationApp::CheckNodeForReport(unsigned long myPseudonym,
         BasicSafetyMessage * bsm, BsmCheck * bsmCheck, NodeTable * detectedNodes) {
 
     bool checkFailed = false;
@@ -45,7 +45,7 @@ bool AggrigationApp::CheckNodeForReport(unsigned long myPseudonym,
 
 
     unsigned long senderId = bsm->getSenderPseudonym();
-
+    
     MDMHistory * mdmHist = detectedNodes->getMDMHistoryAddr(senderId);
     NodeHistory * nodeHist = detectedNodes->getNodeHistoryAddr(senderId);
 
@@ -64,16 +64,6 @@ bool AggrigationApp::CheckNodeForReport(unsigned long myPseudonym,
     }
 
     double factorList[bsmCheckListSize];
-
-    //std::cout<< "ProximityPlausibility" << '\n';
-    for (int var = 0; var < bsmCheckListSize; ++var) {
-        factorList[var] = bsmCheckList[var].getProximityPlausibility();
-    }
-    tempFactor = AggregateFactorsListDouble(bsmCheck->getProximityPlausibility(),
-            factorList, bsmCheckListSize);
-    if (tempFactor < Threshold) {
-        checkFailed = true;
-    }
 
     //std::cout<< "RangePlausibility" << '\n';
     for (int var = 0; var < bsmCheckListSize; ++var) {
@@ -272,7 +262,7 @@ bool AggrigationApp::CheckNodeForReport(unsigned long myPseudonym,
     return checkFailed;
 }
 
-//double AggrigationApp::AggregateFactorsListDouble(double curFactor,
+//double AggregationApp::AggregateFactorsListDouble(double curFactor,
 //        double *factorList, int factorListSize) {
 //    double averageFactor = curFactor;
 //    double divValue = 1;
@@ -285,11 +275,11 @@ bool AggrigationApp::CheckNodeForReport(unsigned long myPseudonym,
 //    return averageFactor;
 //}
 
-double AggrigationApp::getMinFactor() {
+double AggregationApp::getMinFactor() {
     return minFactor;
 }
 
-double AggrigationApp::AggregateFactorsListDouble(double curFactor, double *factorList,
+double AggregationApp::AggregateFactorsListDouble(double curFactor, double *factorList,
         int factorListSize) {
 
     if (version == 1) {
@@ -315,7 +305,7 @@ double AggrigationApp::AggregateFactorsListDouble(double curFactor, double *fact
 }
 
 //
-//double AggrigationApp::AggregateFactorsListDouble(double curFactor, double *factorList,
+//double AggregationApp::AggregateFactorsListDouble(double curFactor, double *factorList,
 //        int factorListSize) {
 //
 //    if (version == 1) {
@@ -341,7 +331,7 @@ double AggrigationApp::AggregateFactorsListDouble(double curFactor, double *fact
 //}
 
 //best rate / faulty
-//bool AggrigationApp::AggregateFactorsList(double curFactor, double *factorList,
+//bool AggregationApp::AggregateFactorsList(double curFactor, double *factorList,
 //        int factorListSize) {
 //    if (version == 1) {
 //        double averageFactor = curFactor;

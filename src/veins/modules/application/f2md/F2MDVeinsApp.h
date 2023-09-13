@@ -37,6 +37,7 @@ using namespace veins;
 #include <veins/modules/application/f2md/mdApplications/MachineLearningApp.h>
 #include <veins/modules/application/f2md/mdApplications/ExperiApp.h>
 
+
 #include <veins/modules/application/f2md/mdSupport/VarThrePrintable.h>
 #include <veins/modules/application/f2md/mdSupport/XmlWriter.h>
 
@@ -173,8 +174,8 @@ protected:
     ThresholdApp ThreV1 = ThresholdApp(1, 0.28125);
     ThresholdApp ThreV2 = ThresholdApp(2, 0.28125);
 
-    AggrigationApp AggrV1 = AggrigationApp(1, 0.28125,0.5, 10.0, 3);
-    AggrigationApp AggrV2 = AggrigationApp(2, 0.28125,0.5, 10.0, 3);
+    AggregationApp AggrV1 = AggregationApp(1, 0.28125,0.5, 10.0, 3);
+    AggregationApp AggrV2 = AggregationApp(2, 0.28125,0.5, 10.0, 3);
 
     BehavioralApp BehaV1 = BehavioralApp(1, 0.5);
     BehavioralApp BehaV2 = BehavioralApp(2, 0.5);

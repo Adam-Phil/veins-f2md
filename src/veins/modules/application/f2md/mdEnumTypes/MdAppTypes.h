@@ -18,23 +18,24 @@ namespace mdAppTypes {
 
 enum App {
     ThresholdApp = 0,
-    AggrigationApp,
+    AggregationApp,
     BehavioralApp,
     CooperativeApp,
     ExperiApp,
     MachineLearningApp,
+    KalmanApp,
 
     SIZE_OF_ENUM
 };
 
-static const char* AppNames[] = { "ThresholdApp", "AggrigationApp",
-        "CooperativeApp", "BehavioralApp", "ExperiApp", "MachineLearningApp" };
+static const char* AppNames[] = { "ThresholdApp", "AggregationApp",
+        "CooperativeApp", "BehavioralApp", "ExperiApp", "MachineLearningApp", "KalmanApp" };
 
 static_assert(sizeof(mdAppTypes::AppNames)/sizeof(char*) == mdAppTypes::SIZE_OF_ENUM
         , "sizes dont match");
 
-static const mdAppTypes::App intApp[] = { ThresholdApp, AggrigationApp,
-        BehavioralApp, CooperativeApp, ExperiApp, MachineLearningApp };
+static const mdAppTypes::App intApp[] = { ThresholdApp, AggregationApp,
+        BehavioralApp, CooperativeApp, ExperiApp, MachineLearningApp, KalmanApp };
 
 static_assert(sizeof(mdAppTypes::intApp)/sizeof(mdAppTypes::App) == mdAppTypes::SIZE_OF_ENUM
         , "sizes dont match");

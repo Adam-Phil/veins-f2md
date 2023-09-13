@@ -48,7 +48,7 @@ simple JosephVeinsApp extends F2MDBaseApplLayer
     bool RandomLocalMix = default(false);
 
     double LOCAL_ATTACKER_PROB = default(0.05);
-
+    string LOCAL_ATTACK_LIST = default("0,1,2,3,4,5,6,7,8");
     int LOCAL_ATTACK_TYPE = default(7);
 
     double GLOBAL_ATTACKER_PROB = default(0.0);

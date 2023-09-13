@@ -54,7 +54,6 @@ double ExperiChecks::ProximityPlausibilityCheck(veins::Coord* testPosition, vein
     if (distance < params->MAX_PROXIMITY_RANGE_L) {
         if (distance < params->MAX_PROXIMITY_RANGE_W * 2 || (positionAngle < 90 && distance < (params->MAX_PROXIMITY_RANGE_W / cos((90 - positionAngle) * M_PI / 180)))) {
             double minDistance = 9999;
-
             for (std::pair<LAddress::L2Type, veins::Coord> x : *realDynamicMap) {
                 if (x.first != myId) {
                     double testDistance = mdmLib.calculateDistancePtr(testPosition, &x.second);
@@ -910,7 +909,7 @@ double ExperiChecks::KalmanSpeedConsistancyCheck(veins::Coord* curSpeed,
 
 BsmCheck ExperiChecks::CheckBSM(BasicSafetyMessage* bsm,
     NodeTable* detectedNodes)
-{
+{   
     BsmCheck bsmCheck = BsmCheck();
 
     unsigned long senderPseudonym = bsm->getSenderPseudonym();

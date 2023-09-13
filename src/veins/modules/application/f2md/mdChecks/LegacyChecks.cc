@@ -709,8 +709,6 @@ BsmCheck LegacyChecks::CheckBSM(BasicSafetyMessage* bsm,
         senderMDM = &nullMDMNode;
     }
 
-    bsmCheck.setProximityPlausibility(ProximityPlausibilityCheck(&bsm->getSenderPos(), &myPosition, &myHeading));
-
     bsmCheck.setRangePlausibility(
         RangePlausibilityCheck(&myPosition, &bsm->getSenderPos()));
 

@@ -9,8 +9,8 @@
  * All rights reserved.
  *******************************************************************************/
 
-#ifndef __VEINS_AggrigationApp_H_
-#define __VEINS_AggrigationApp_H_
+#ifndef __VEINS_AggregationApp_H_
+#define __VEINS_AggregationApp_H_
 
 #include <tuple>
 #include <omnetpp.h>
@@ -21,7 +21,7 @@
 using namespace veins;
 using namespace omnetpp;
 
-class AggrigationApp: public MDApplication {
+class AggregationApp: public MDApplication {
 public:
 
     double Threshold = 0.5;
@@ -29,7 +29,7 @@ public:
     double deltaTrustTime = 10;
     int maxBsmTrustNum = 5;
 
-    AggrigationApp(int version, double Threshold, double devValue ,double deltaTrustTime,
+    AggregationApp(int version, double Threshold, double devValue ,double deltaTrustTime,
             int maxBsmTrustNum);
 
     bool CheckNodeForReport(unsigned long myPseudonym,

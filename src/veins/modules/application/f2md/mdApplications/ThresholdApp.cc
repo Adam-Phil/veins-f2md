@@ -47,8 +47,7 @@ bool ThresholdApp::CheckNodeForReport(unsigned long myPseudonym,
         }
     }
 
-    if (checkFailed || bsmCheck->getProximityPlausibility() <= Threshold
-    || bsmCheck->getRangePlausibility() <= Threshold
+    if (checkFailed || bsmCheck->getRangePlausibility() <= Threshold
             || bsmCheck->getPositionConsistancy() <= Threshold
             || bsmCheck->getPositionSpeedConsistancy() <= Threshold
             || bsmCheck->getPositionSpeedMaxConsistancy() <= Threshold

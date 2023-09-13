@@ -61,19 +61,19 @@ public:
     bool RandomLocalMix = false;
 
     double LOCAL_ATTACKER_PROB = 0.05;
+    std::string LOCAL_ATTACK_LIST = "1,2,3,4,5";
 
     attackTypes::Attacks LOCAL_ATTACK_TYPE = attackTypes::RandomSpeed;
     attackTypes::Attacks MixLocalAttacksList[19] = {attackTypes::ConstPos,
-        attackTypes::Disruptive, attackTypes::RandomPos,
-        attackTypes::StaleMessages, attackTypes::DoSRandomSybil,
-        attackTypes::ConstPosOffset, attackTypes::ConstSpeed,
-        attackTypes::DoS, attackTypes::RandomPosOffset,
-        attackTypes::DataReplaySybil, attackTypes::DoSDisruptive,
-        attackTypes::ConstSpeedOffset, attackTypes::RandomSpeedOffset,
-        attackTypes::EventualStop, attackTypes::DoSDisruptiveSybil,
-        attackTypes::DataReplay, attackTypes::DoSRandom,
-        attackTypes::GridSybil, attackTypes::RandomSpeed};
-
+        attackTypes::ConstPosOffset, attackTypes::RandomPos,
+        attackTypes::RandomPosOffset, attackTypes::ConstSpeed,
+        attackTypes::ConstSpeedOffset, attackTypes::RandomSpeed,
+        attackTypes::RandomSpeedOffset, attackTypes::EventualStop,
+        attackTypes::Disruptive, attackTypes::DataReplay,
+        attackTypes::StaleMessages, attackTypes::DoS,
+        attackTypes::DoSRandom, attackTypes::DoSDisruptive,
+        attackTypes::GridSybil, attackTypes::DataReplaySybil,
+        attackTypes::DoSRandomSybil, attackTypes::DoSDisruptiveSybil};
     //ConstPos, ConstPosOffset, RandomPos, RandomPosOffset,
     //ConstSpeed, ConstSpeedOffset, RandomSpeed, RandomSpeedOffset,
     //EventualStop, Disruptive, DataReplay, StaleMessages,
