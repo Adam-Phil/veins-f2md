@@ -13,19 +13,34 @@
 
 Define_Module(JosephVeinsApp);
 
-std::set<std::string> split(std::string s, std::string delimiter) {
+std::set<std::string> split(std::string s, std::string delimiter)
+{
     size_t pos_start = 0, pos_end, delim_len = delimiter.length();
     std::string token;
     std::set<std::string> res;
 
     while ((pos_end = s.find(delimiter, pos_start)) != std::string::npos) {
-        token = s.substr (pos_start, pos_end - pos_start);
+        token = s.substr(pos_start, pos_end - pos_start);
         pos_start = pos_end + delim_len;
         res.insert(token);
     }
 
-    res.insert(s.substr (pos_start));
+    res.insert(s.substr(pos_start));
     return res;
+}
+
+void JosephVeinsApp::adjustSavePath(std::string checkType, int appType)
+{
+    params.savePath = params.savePath + "_1_";
+    return;
+    params.savePath = params.savePath + "_" + checkType;
+    if (appType == 5) {
+        std::string mlType = typeRetriever.GetMlType();
+        params.savePath = params.savePath + "_" + mlType;
+    }
+    else {
+        params.savePath = params.savePath + "_" + mdAppTypes::AppNames[appType];
+    }
 }
 
 void JosephVeinsApp::initialize(int stage)
@@ -80,8 +95,10 @@ void JosephVeinsApp::initialize(int stage)
 
         params.checksVersionV1 = mdChecksVersionTypes::intChecksVersion[par("checksVersionV1").intValue()];
         params.checksVersionV2 = mdChecksVersionTypes::intChecksVersion[par("checksVersionV2").intValue()];
+        std::string checkNameV1 = mdChecksVersionTypes::ChecksVersionNames[par("checksVersionV1").intValue()];
 
-        params.appTypeV1 = mdAppTypes::intApp[par("appTypeV1").intValue()];
+        int appTypeV1 = par("appTypeV1").intValue();
+        params.appTypeV1 = mdAppTypes::intApp[appTypeV1];
         params.appTypeV2 = mdAppTypes::intApp[par("appTypeV2").intValue()];
 
         params.writeSelfMsg = par("writeSelfMsg");
@@ -109,7 +126,7 @@ void JosephVeinsApp::initialize(int stage)
         params.maPortV2 = par("maPortV2");
         params.enableVarThreV1 = par("enableVarThreV1");
         params.enableVarThreV2 = par("enableVarThreV2");
-        //Simulation Parameters
+        // Simulation Parameters
 
         // ------ Detection Parameters -- Start
         params.MAX_PROXIMITY_RANGE_L = par("MAX_PROXIMITY_RANGE_L");
@@ -180,7 +197,7 @@ void JosephVeinsApp::initialize(int stage)
         params.CollectionPeriod = par("CollectionPeriod");
         params.UntolerancePeriod = par("UntolerancePeriod");
         //------ Report Parameters -- End
-
+        adjustSavePath(checkNameV1, appTypeV1);
         linkControl.initialize(&params, traci);
 
         linkInit = true;
@@ -203,13 +220,13 @@ void JosephVeinsApp::initialize(int stage)
         curAccel = Coord(0, 0, 0);
         myMdType = mbTypes::Genuine;
         myAttackType = attackTypes::Attacks::Genuine;
-        //attackBsm.setSenderAddress(0);
-        //nextAttackBsm.setSenderAddress(0);
+        // attackBsm.setSenderAddress(0);
+        // nextAttackBsm.setSenderAddress(0);
 
         reportProtocolEnforcerV1.setParams(&params);
         reportProtocolEnforcerV2.setParams(&params);
 
-        //mkdir savePath
+        // mkdir savePath
         struct stat info;
         if ((stat(params.savePath.c_str(), &info) != 0) || !(info.st_mode & S_IFDIR)) {
             mkdir(params.savePath.c_str(), 0777);
@@ -254,7 +271,7 @@ void JosephVeinsApp::initialize(int stage)
             }
         }
 
-        //pseudonym-------------------------------
+        // pseudonym-------------------------------
         myPcType = params.PC_TYPE;
         pseudoNum = 0;
 
@@ -269,7 +286,7 @@ void JosephVeinsApp::initialize(int stage)
 
         myPseudonym = pcPolicy.getNextPseudonym();
 
-        //pseudonym-------------------------------
+        // pseudonym-------------------------------
 
         if (params.randomConf) {
             double randConfPos = genLib.RandomDouble(
@@ -389,8 +406,8 @@ void JosephVeinsApp::initialize(int stage)
 
         } break;
         case mbTypes::LocalAttacker: {
-            //attack-------------------------------
-            std::set<std::string> revoc = split(params.LOCAL_ATTACK_LIST,",");
+            // attack-------------------------------
+            std::set<std::string> revoc = split(params.LOCAL_ATTACK_LIST, ",");
             if (params.UseAttacksServer) {
                 myAttackType = localAttackServer.getNextAttack();
             }
@@ -411,7 +428,7 @@ void JosephVeinsApp::initialize(int stage)
                             LastLocalAttackIndex = 0;
                         }
                     }
-                } while(!revoc.count(std::to_string(localAttackIndex)));
+                } while (!revoc.count(std::to_string(localAttackIndex)));
                 myAttackType = params.MixLocalAttacksList[localAttackIndex];
             }
             else {
@@ -450,7 +467,7 @@ void JosephVeinsApp::initialize(int stage)
 
             mdAttack.init(myAttackType, MaxRandomPosX, MaxRandomPosY, &params);
 
-            //attack-------------------------------
+            // attack-------------------------------
             traciVehicle->setColor(TraCIColor(255, 0, 0, 255));
 
         } break;
@@ -490,7 +507,7 @@ void JosephVeinsApp::finish()
 
     F2MDBaseApplLayer::finish();
 
-    //statistics recording goes here
+    // statistics recording goes here
 }
 
 void JosephVeinsApp::setMDApp(mdAppTypes::App appTypeV1,
@@ -624,11 +641,11 @@ void JosephVeinsApp::onBSM(BasicSafetyMessage* bsm)
         if (params.EnableV2) {
             existingMDM->addBsmCheck(bsmCheckV2, 2);
         }
-        //detectedNodes.put(senderPseudonym, *existingNode, *existingMDM);
+        // detectedNodes.put(senderPseudonym, *existingNode, *existingMDM);
     }
 
-    //Your application has received a beacon message from another car or RSU
-    //code for handling the message goes here
+    // Your application has received a beacon message from another car or RSU
+    // code for handling the message goes here
 }
 void JosephVeinsApp::treatAttackFlags()
 {
@@ -789,7 +806,7 @@ void JosephVeinsApp::LocalMisbehaviorDetection(BasicSafetyMessage* bsm,
 
         if (!initV1) {
             AppV1->resetAllFlags();
-            //mdAuthority.resetAll();
+            // mdAuthority.resetAll();
             initV1 = true;
         }
 
@@ -941,7 +958,7 @@ void JosephVeinsApp::LocalMisbehaviorDetection(BasicSafetyMessage* bsm,
 
         if (!initV2) {
             AppV2->resetAllFlags();
-            //mdAuthority.resetAll();
+            // mdAuthority.resetAll();
             initV2 = true;
         }
 
@@ -1154,7 +1171,7 @@ void JosephVeinsApp::sendReport(MDReport reportBase, int version,
             reportStr = hir.getReportPrintableJson();
         }
         else {
-            //do not report now
+            // do not report now
             return;
         }
     } break;
@@ -1163,17 +1180,17 @@ void JosephVeinsApp::sendReport(MDReport reportBase, int version,
         break;
     }
 
-    //std::cout << reportStr << "\n";
-    //exit(0);
+    // std::cout << reportStr << "\n";
+    // exit(0);
 
     if (!maversion.compare("V1")) {
         HTTPRequest httpr = HTTPRequest(params.maPortV1, params.maHostV1);
-        std::string response = httpr.Request(reportStr);
+        std::string response = httpr.Request(reportStr, "POST");
     }
 
     if (!maversion.compare("V2")) {
         HTTPRequest httpr = HTTPRequest(params.maPortV2, params.maHostV2);
-        std::string response = httpr.Request(reportStr);
+        std::string response = httpr.Request(reportStr, "POST");
     }
 }
 
@@ -1223,14 +1240,14 @@ void JosephVeinsApp::writeSelfListBsm(BasicSafetyMessage bsm)
 
 void JosephVeinsApp::onWSM(BaseFrame1609_4* wsm)
 {
-    //Your application has received a data message from another car or RSU
-    //code for handling the message goes here, see TraciDemo11p.cc for examples
+    // Your application has received a data message from another car or RSU
+    // code for handling the message goes here, see TraciDemo11p.cc for examples
 }
 
 void JosephVeinsApp::onWSA(DemoServiceAdvertisment* wsa)
 {
-    //Your application has received a service advertisement from another car or RSU
-    //code for handling the message goes here, see TraciDemo11p.cc for examples
+    // Your application has received a service advertisement from another car or RSU
+    // code for handling the message goes here, see TraciDemo11p.cc for examples
 }
 
 void JosephVeinsApp::handleSelfMsg(cMessage* msg)
@@ -1244,13 +1261,13 @@ void JosephVeinsApp::handleSelfMsg(cMessage* msg)
         std::string reportStr = "curTime:";
         reportStr.append(std::to_string(simTime().dbl()));
         HTTPRequest httpr = HTTPRequest(params.maPortV1, params.maHostV1);
-        std::string response = httpr.Request(reportStr);
+        std::string response = httpr.Request(reportStr, "POST");
     }
     if (params.sendReportsV2) {
         std::string reportStr = "curTime:";
         reportStr.append(std::to_string(simTime().dbl()));
         HTTPRequest httpr = HTTPRequest(params.maPortV2, params.maHostV2);
-        std::string response = httpr.Request(reportStr);
+        std::string response = httpr.Request(reportStr, "POST");
     }
 
     if (params.writeSelfMsg) {
@@ -1269,8 +1286,8 @@ void JosephVeinsApp::handleSelfMsg(cMessage* msg)
         pcPolicy.checkPseudonymChange(myPcType);
     }
 
-    //this method is for self messages (mostly timers)
-    //it is important to call the F2MDBaseApplLayer function for BSM and WSM transmission
+    // this method is for self messages (mostly timers)
+    // it is important to call the F2MDBaseApplLayer function for BSM and WSM transmission
 }
 
 void JosephVeinsApp::handleReportProtocol(bool lastTimeStep)
@@ -1334,7 +1351,7 @@ void JosephVeinsApp::handleReportProtocol(bool lastTimeStep)
                 if (params.sendReportsV1 && myBsmNum > 0) {
                     HTTPRequest httpr = HTTPRequest(params.maPortV1, params.maHostV1);
                     std::string response = httpr.Request(
-                        hir.getReportPrintableJson());
+                        hir.getReportPrintableJson(), "POST");
                 }
             }
             else {
@@ -1406,7 +1423,7 @@ void JosephVeinsApp::handleReportProtocol(bool lastTimeStep)
                 if (params.sendReportsV2 && myBsmNum > 0) {
                     HTTPRequest httpr = HTTPRequest(params.maPortV2, params.maHostV2);
                     std::string response = httpr.Request(
-                        hir.getReportPrintableJson());
+                        hir.getReportPrintableJson(), "POST");
                 }
             }
             else {
@@ -1454,7 +1471,7 @@ void JosephVeinsApp::handlePositionUpdate(cObject* obj)
 
         lastPositionUpdate = simTime().dbl();
 
-        //curHeadingConfidence = Coord(0, 0, 0);
+        // curHeadingConfidence = Coord(0, 0, 0);
 
         RelativeOffset relativeOffset = RelativeOffset(&curPositionConfidence,
             &curSpeedConfidence, &curHeadingConfidence, &curAccelConfidence,
@@ -1500,8 +1517,8 @@ void JosephVeinsApp::handlePositionUpdate(cObject* obj)
             &curAccel, &curAccelConfidence);
     }
 
-    //the vehicle has moved. Code that reacts to new positions goes here.
-    //member variables such as currentPosition and currentSpeed are updated in the parent class
+    // the vehicle has moved. Code that reacts to new positions goes here.
+    // member variables such as currentPosition and currentSpeed are updated in the parent class
 }
 
 // code is based on TracingApp::populateWSM(WaveShortMessage* wsm, int rcvId, int serial)
@@ -1511,7 +1528,7 @@ void JosephVeinsApp::populateWSM(BaseFrame1609_4* wsm, LAddress::L2Type rcvId,
     F2MDBaseApplLayer::populateWSM(wsm, rcvId, serial);
     if (BasicSafetyMessage* bsm = dynamic_cast<BasicSafetyMessage*>(wsm)) {
 
-        //F2MD
+        // F2MD
         bsm->setSenderPseudonym(myPseudonym);
         bsm->setSenderMbType(myMdType);
         bsm->setSenderAttackType(myAttackType);
@@ -1588,7 +1605,7 @@ void JosephVeinsApp::populateWSM(BaseFrame1609_4* wsm, LAddress::L2Type rcvId,
                 bsm->setSenderLength(myLength);
 
                 bsm->setSenderMbType(mbTypes::Genuine);
-                //bsm->setSenderAttackType(attackTypes::Genuine);
+                // bsm->setSenderAttackType(attackTypes::Genuine);
             }
         }
 
@@ -1703,7 +1720,7 @@ bool JosephVeinsApp::isAccusedNode(unsigned long id)
     return false;
 }
 
-//F2MD
+// F2MD
 void JosephVeinsApp::addMyBsm(BasicSafetyMessage bsm)
 {
     if (myBsmNum < MYBSM_SIZE) {

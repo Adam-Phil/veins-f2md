@@ -25,7 +25,7 @@ LocalAttackServer::LocalAttackServer(int port, std::string host) {
 void LocalAttackServer::pingAttackServer() {
 
     std::string s = "helloworld";
-    std::string response = httpr.Request(s);
+    std::string response = httpr.Request(s, "POST");
     std::string delimiter = ";";
     bool attack = false;
 

@@ -40,6 +40,7 @@ using namespace veins;
 
 #include <veins/modules/application/f2md/mdSupport/VarThrePrintable.h>
 #include <veins/modules/application/f2md/mdSupport/XmlWriter.h>
+#include <veins/modules/application/f2md/mdSupport/MlTypeRetriever.h>
 
 #include <veins/modules/application/f2md/mdReport/OneMessageReport.h>
 #include <veins/modules/application/f2md/mdReport/EvidenceReport.h>
@@ -130,6 +131,7 @@ protected:
     MDApplication *AppV1;
     MDApplication *AppV2;
 
+    virtual void adjustSavePath(std::string checkType, int appType);
     virtual void onBSM(BasicSafetyMessage* bsm);
     virtual void onWSM(BaseFrame1609_4* wsm);
     virtual void onWSA(DemoServiceAdvertisment* wsa);
@@ -185,6 +187,8 @@ protected:
 
     MachineLearningApp PybgV1 = MachineLearningApp(1, mlPortV1, mlHostV1);
     MachineLearningApp PybgV2 = MachineLearningApp(2, mlPortV2, mlHostV2);
+
+    MlTypeRetriever typeRetriever = MlTypeRetriever(1, mlPortV1, mlHostV1);
 
     ProtocolEnforcer reportProtocolEnforcerV1 = ProtocolEnforcer();
     ProtocolEnforcer reportProtocolEnforcerV2 = ProtocolEnforcer();

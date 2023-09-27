@@ -64,11 +64,14 @@ std::string HTTPRequest::formaliseString(std::string arg){
 char message[65536];
 char response[16384];
 
-std::string HTTPRequest::Request(std::string requestArg) {
+std::string HTTPRequest::Request(std::string requestArg, std::string type) {
     /* first what are we going to send and where are we going to send it? */
     int portno = portInt;
     const char *host = hostStr.c_str();
-    const char *message_fmt = "POST %s HTTP/1.0\r\n\r\n";
+    char *message_fmt_old = "xxxx %s HTTP/1.0\r\n\r\n";
+    std::string message_fmt_s(message_fmt_old);
+    const char *message_fmt = message_fmt_s.replace(0,4,type).c_str();
+
 
     struct hostent *server;
     struct sockaddr_in serv_addr;

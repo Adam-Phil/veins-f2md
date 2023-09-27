@@ -31,7 +31,7 @@ private:
 
 public:
     HTTPRequest(int portno, std::string host);
-    std::string Request(std::string arg);
+    std::string Request(std::string arg, std::string type);
     std::string formaliseString(std::string requestArg);
 
 };
