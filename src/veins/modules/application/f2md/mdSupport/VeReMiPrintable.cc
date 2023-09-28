@@ -15,13 +15,14 @@ static bool folderCreated = false;
 static int prevSlice = 0;
 static char directoryPathGen[1024] = "";
 
-void VeReMiPrintable::initVeReMiPrintable(std::string basePath, std::string serial, LAddress::L2Type& realId, int parentId, int attackerType, const std::string curDate,double sliceTime, double sliceStartTime, double simTime) {
+void VeReMiPrintable::initVeReMiPrintable(std::string basePath, std::string pathAdd, std::string serial, LAddress::L2Type& realId, int parentId, int attackerType, const std::string curDate,double sliceTime, double sliceStartTime, double simTime) {
 
     int curSlice = (simTime-sliceStartTime)/sliceTime;
     if(prevSlice != curSlice || !folderCreated){
         folderCreated = true;
         prevSlice = curSlice;
         strcat(directoryPathGen, basePath.c_str());
+        strcat(directoryPathGen, pathAdd.c_str());
         strcat(directoryPathGen, serial.c_str());
         struct stat info;
         if (stat(directoryPathGen, &info) != 0) {
@@ -42,6 +43,7 @@ void VeReMiPrintable::initVeReMiPrintable(std::string basePath, std::string seri
         strcat(filePathGen, curDate.c_str());
 
         strcat(directoryPathGen, basePath.c_str());
+        strcat(directoryPathGen, pathAdd.c_str());
         strcat(directoryPathGen, serial.c_str());
         strcat(directoryPathGen, filePathGen);
 

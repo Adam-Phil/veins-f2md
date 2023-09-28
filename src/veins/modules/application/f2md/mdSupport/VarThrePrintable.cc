@@ -120,7 +120,7 @@ void VarThrePrintable::getVarThrePrintable(char* outStr, bool printOut) {
 
 }
 
-void VarThrePrintable::saveFile(std::string path, std::string serial, bool printOut) {
+void VarThrePrintable::saveFile(std::string path, std::string pathAdd, std::string serial, bool printOut) {
 
     char fileNameApp[64];
 
@@ -132,8 +132,10 @@ void VarThrePrintable::saveFile(std::string path, std::string serial, bool print
     char directoryPathGen[1024] = "";
     char filePathGen[1024] = "";
     const char * pathChar = path.c_str();
+    const char * pathAddChar = pathAdd.c_str();
     const char * serialChar = serial.c_str();
     strcat(directoryPathGen, pathChar);
+    strcat(directoryPathGen, pathAddChar);
     strcat(directoryPathGen, serialChar);
 
     struct stat info;

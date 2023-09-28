@@ -64,7 +64,7 @@ public:
     double getMinFactor();
     void incrementDetailedFlags(BasicSafetyMessage * bsm,BsmCheck * bsmCheck, double Threshold);
 
-    void saveLine( std::string path, std::string serial, double density,
+    void saveLine( std::string path, std::string pathAdd, std::string serial, double density,
             double deltaT, bool printOut);
     void resetInstFlags();
     void resetAllFlags();

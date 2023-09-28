@@ -35,7 +35,7 @@ public:
     std::string traceJSONFile;
     std::string traceGroundTruthJSONFile;
 
-    void initVeReMiPrintable(std::string basePath, std::string serial, LAddress::L2Type& realId, int parentId, int attackerType, const std::string curDate,double sliceTime, double sliceStartTime, double simTime);
+    void initVeReMiPrintable(std::string basePath, std::string pathAdd, std::string serial, LAddress::L2Type& realId, int parentId, int attackerType, const std::string curDate,double sliceTime, double sliceStartTime, double simTime);
 
 
     virtual const void traceJSON(std::string file, std::string JSONObject) const;

@@ -151,14 +151,14 @@ std::string BsmPrintable::getBsmPrintHead() {
     return jw.getJsonElement("Metadata");
 }
 
-bool BsmPrintable::writeSelfStrToFile(const std::string strFileCnst,
+bool BsmPrintable::writeSelfStrToFile(const std::string strFileCnst, std::string pathAdd,
         const std::string serial,
         const std::string outStr, const std::string curDate) {
 
     int gentime = simTime().dbl();
     int gentime0000 = (simTime().dbl() - gentime) * 10000;
 
-    std::string upperDirName = strFileCnst + serial;
+    std::string upperDirName = strFileCnst + pathAdd + serial;
     const char* upperDirNameConst = upperDirName.c_str();
     struct stat info;
     if (stat(upperDirNameConst, &info) != 0) {
@@ -168,7 +168,7 @@ bool BsmPrintable::writeSelfStrToFile(const std::string strFileCnst,
         mkdir(upperDirNameConst, 0777);
     }
 
-    std::string dirnameStr = strFileCnst + serial + "/SelfBsms_" + curDate;
+    std::string dirnameStr = strFileCnst + pathAdd + serial + "/SelfBsms_" + curDate;
     const char* dirnameConst = dirnameStr.c_str();
 
     struct stat info2;
@@ -179,7 +179,7 @@ bool BsmPrintable::writeSelfStrToFile(const std::string strFileCnst,
         mkdir(dirnameConst, 0777);
     }
 
-    std::string strFile = strFileCnst + serial + "/SelfBsms_" + curDate
+    std::string strFile = strFileCnst + pathAdd + serial + "/SelfBsms_" + curDate
             + "/MDBsm_" + std::to_string(gentime) + "-"
             + std::to_string(gentime0000) + "_" + std::to_string(receiverPseudo)+ ".bsm";
 
@@ -205,11 +205,11 @@ bool BsmPrintable::writeSelfStrToFile(const std::string strFileCnst,
     return true;
 }
 
-bool BsmPrintable::writeSelfStrToFileList(const std::string strFileCnst,
+bool BsmPrintable::writeSelfStrToFileList(const std::string strFileCnst, std::string pathAdd,
         const std::string serial,
         const std::string outStr, const std::string curDate) {
 
-    std::string upperDirName = strFileCnst + serial;
+    std::string upperDirName = strFileCnst + pathAdd + serial;
     const char* upperDirNameConst = upperDirName.c_str();
     struct stat info;
     if (stat(upperDirNameConst, &info) != 0) {
@@ -219,7 +219,7 @@ bool BsmPrintable::writeSelfStrToFileList(const std::string strFileCnst,
         mkdir(upperDirNameConst, 0777);
     }
 
-    std::string dirnameStr = strFileCnst + serial + "/SelfBsmsList_" + curDate;
+    std::string dirnameStr = strFileCnst + pathAdd + serial + "/SelfBsmsList_" + curDate;
     const char* dirnameConst = dirnameStr.c_str();
 
     struct stat info2;
@@ -230,7 +230,7 @@ bool BsmPrintable::writeSelfStrToFileList(const std::string strFileCnst,
         mkdir(dirnameConst, 0777);
     }
 
-    std::string strFile = strFileCnst + serial + "/SelfBsmsList_" + curDate
+    std::string strFile = strFileCnst + pathAdd + serial + "/SelfBsmsList_" + curDate
             + "/MDBsm_" + std::to_string(receiverPseudo)+ ".lbsm";
 
     std::fstream checkFile(strFile);
@@ -258,14 +258,14 @@ bool BsmPrintable::writeSelfStrToFileList(const std::string strFileCnst,
 }
 
 
-bool BsmPrintable::writeStrToFile(const std::string strFileCnst,
+bool BsmPrintable::writeStrToFile(const std::string strFileCnst, std::string pathAdd,
         const std::string serial, const std::string version,
         const std::string outStr, const std::string curDate) {
 
     int gentime = bsm.getArrivalTime().dbl();
     int gentime0000 = (bsm.getArrivalTime().dbl() - gentime) * 10000;
 
-    std::string upperDirName = strFileCnst + serial;
+    std::string upperDirName = strFileCnst + pathAdd + serial;
     const char* upperDirNameConst = upperDirName.c_str();
     struct stat info;
     if (stat(upperDirNameConst, &info) != 0) {
@@ -275,7 +275,7 @@ bool BsmPrintable::writeStrToFile(const std::string strFileCnst,
         mkdir(upperDirNameConst, 0777);
     }
 
-    std::string dirnameStr = strFileCnst + serial + "/MDBsms_"+version+"_"+ curDate;
+    std::string dirnameStr = strFileCnst + pathAdd + serial + "/MDBsms_"+version+"_"+ curDate;
     const char* dirnameConst = dirnameStr.c_str();
 
     struct stat info2;
@@ -286,7 +286,7 @@ bool BsmPrintable::writeStrToFile(const std::string strFileCnst,
         mkdir(dirnameConst, 0777);
     }
 
-    std::string strFile = strFileCnst + serial + "/MDBsms_"+version+"_"+ curDate
+    std::string strFile = strFileCnst+ pathAdd + serial + "/MDBsms_"+version+"_"+ curDate
             + "/MDBsm_" + version + "_" + std::to_string(gentime) + "-"
             + std::to_string(gentime0000) + "_" + std::to_string(receiverPseudo)
             + "_" + std::to_string(bsm.getSenderPseudonym()) + ".bsm";
@@ -312,11 +312,11 @@ bool BsmPrintable::writeStrToFile(const std::string strFileCnst,
 }
 
 
-bool BsmPrintable::writeStrToFileList(const std::string strFileCnst,
+bool BsmPrintable::writeStrToFileList(const std::string strFileCnst, std::string pathAdd, 
         const std::string serial, const std::string version,
         const std::string outStr, const std::string curDate) {
 
-    std::string upperDirName = strFileCnst + serial;
+    std::string upperDirName = strFileCnst + pathAdd + serial;
     const char* upperDirNameConst = upperDirName.c_str();
     struct stat info;
     if (stat(upperDirNameConst, &info) != 0) {
@@ -326,7 +326,7 @@ bool BsmPrintable::writeStrToFileList(const std::string strFileCnst,
         mkdir(upperDirNameConst, 0777);
     }
 
-    std::string dirnameStr = strFileCnst + serial + "/MDBsmsList_"+version+"_"+ curDate;
+    std::string dirnameStr = strFileCnst + pathAdd + serial + "/MDBsmsList_"+version+"_"+ curDate;
     const char* dirnameConst = dirnameStr.c_str();
 
     struct stat info2;
@@ -337,7 +337,7 @@ bool BsmPrintable::writeStrToFileList(const std::string strFileCnst,
         mkdir(dirnameConst, 0777);
     }
 
-    std::string strFile = strFileCnst + serial + "/MDBsmsList_"+version+"_"+ curDate
+    std::string strFile = strFileCnst+ pathAdd + serial + "/MDBsmsList_"+version+"_"+ curDate
             + "/MDBsm_" + version + "_" + std::to_string(receiverPseudo)
             + ".lbsm";
 

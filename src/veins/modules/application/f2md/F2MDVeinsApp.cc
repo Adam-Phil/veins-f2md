@@ -45,6 +45,7 @@ std::string JosephVeinsApp::getSavePathAdd(std::string checkType, int appType)
         std::string strippedAppType = appSType.replace(stripAppStart, 3, "");
         add = add + "_" + strippedAppType;
     }
+    add = add + "/";
     return add;
 }
 
@@ -237,9 +238,6 @@ void JosephVeinsApp::initialize(int stage)
         if ((stat(params.savePath.c_str(), &info) != 0) || !(info.st_mode & S_IFDIR)) {
             mkdir(params.savePath.c_str(), 0777);
         }
-        std::string checkNameV1 = mdChecksVersionTypes::ChecksVersionNames[par("checksVersionV1").intValue()];
-        int appTypeV1 = par("appTypeV1").intValue();
-        adjustSavePath(checkNameV1, appTypeV1);
     }
     else if (stage == 1) {
         EV << "Initializing " << par("appName").stringValue() << std::endl;
@@ -496,7 +494,7 @@ void JosephVeinsApp::initialize(int stage)
         }
 
         if (params.writeVeReMi) {
-            VeReMi.initVeReMiPrintable(params.savePath, params.serialNumber, myId,
+            VeReMi.initVeReMiPrintable(params.savePath, params.savePathAdd, params.serialNumber, myId,
                 getParentModule()->getId(), myAttackType, curDate,
                 params.VeReMiSliceTime, VeReMiSliceStartTime, simTime().dbl());
         }
@@ -831,13 +829,13 @@ void JosephVeinsApp::LocalMisbehaviorDetection(BasicSafetyMessage* bsm,
 
             if ((simTime().dbl() > params.START_SAVE) && params.SaveStatsV1) {
 
-                AppV1->saveLine(params.savePath, params.serialNumber,
+                AppV1->saveLine(params.savePath, params.savePathAdd, params.serialNumber,
                     mobility->getManager()->getManagedHosts().size(),
                     deltaTV1, printOut);
 
-                mdStats.saveLine(params.savePath, params.serialNumber, deltaTV1, printOut);
+                mdStats.saveLine(params.savePath, params.savePathAdd, params.serialNumber, deltaTV1, printOut);
                 if (params.enableVarThreV1) {
-                    varThrePrintableV1.saveFile(params.savePath, params.serialNumber,
+                    varThrePrintableV1.saveFile(params.savePath, params.savePathAdd, params.serialNumber,
                         printOut);
                 }
             }
@@ -982,13 +980,13 @@ void JosephVeinsApp::LocalMisbehaviorDetection(BasicSafetyMessage* bsm,
             deltaTV2 = simTime().dbl();
 
             if ((simTime().dbl() > params.START_SAVE) && params.SaveStatsV2) {
-                AppV2->saveLine(params.savePath, params.serialNumber,
+                AppV2->saveLine(params.savePath, params.savePathAdd, params.serialNumber,
                     mobility->getManager()->getManagedHosts().size(),
                     deltaTV2, printOut);
 
-                mdStats.saveLine(params.savePath, params.serialNumber, deltaTV2, printOut);
+                mdStats.saveLine(params.savePath, params.savePathAdd, params.serialNumber, deltaTV2, printOut);
                 if (params.enableVarThreV2) {
-                    varThrePrintableV2.saveFile(params.savePath, params.serialNumber,
+                    varThrePrintableV2.saveFile(params.savePath, params.savePathAdd, params.serialNumber,
                         printOut);
                 }
             }
@@ -1014,7 +1012,7 @@ void JosephVeinsApp::writeReport(MDReport reportBase, int version,
     case reportTypes::BasicCheckReport: {
         BasicCheckReport bcr = BasicCheckReport(reportBase);
         bcr.setReportedCheck(bsmCheck);
-        bcr.writeStrToFile(params.savePath, params.serialNumber, maversion,
+        bcr.writeStrToFile(params.savePath, params.savePathAdd, params.serialNumber, maversion,
             bcr.getReportPrintableJson(), curDate);
     } break;
 
@@ -1022,21 +1020,21 @@ void JosephVeinsApp::writeReport(MDReport reportBase, int version,
         OneMessageReport omr = OneMessageReport(reportBase);
         omr.setReportedBsm(*bsm);
         omr.setReportedCheck(bsmCheck);
-        omr.writeStrToFile(params.savePath, params.serialNumber, maversion,
+        omr.writeStrToFile(params.savePath, params.savePathAdd, params.serialNumber, maversion,
             omr.getReportPrintableJson(), curDate);
     } break;
     case reportTypes::EvidenceReport: {
         EvidenceReport evr = EvidenceReport(reportBase);
         if (myBsmNum > 0) {
             evr.addEvidence(myBsm[0], bsmCheck, *bsm, &detectedNodes);
-            evr.writeStrToFile(params.savePath, params.serialNumber, maversion,
+            evr.writeStrToFile(params.savePath, params.savePathAdd, params.serialNumber, maversion,
                 evr.getReportPrintableJson(), curDate);
         }
         else {
             OneMessageReport omr = OneMessageReport(reportBase);
             omr.setReportedBsm(*bsm);
             omr.setReportedCheck(bsmCheck);
-            omr.writeStrToFile(params.savePath, params.serialNumber, maversion,
+            omr.writeStrToFile(params.savePath, params.savePathAdd, params.serialNumber, maversion,
                 omr.getReportPrintableJson(), curDate);
         }
     } break;
@@ -1056,7 +1054,7 @@ void JosephVeinsApp::writeReport(MDReport reportBase, int version,
             ProtocolReport hir = ProtocolReport(reportBase);
             hir.addEvidence(myBsm[0], bsmCheck, *bsm, &detectedNodes,
                 simTime().dbl(), params.InitialHistory, version);
-            hir.writeStrToFile(params.savePath, params.serialNumber, maversion,
+            hir.writeStrToFile(params.savePath, params.savePathAdd, params.serialNumber, maversion,
                 hir.getReportPrintableJson(), curDate);
         }
     } break;
@@ -1073,7 +1071,7 @@ void JosephVeinsApp::writeListReport(MDReport reportBase, int version,
     case reportTypes::BasicCheckReport: {
         BasicCheckReport bcr = BasicCheckReport(reportBase);
         bcr.setReportedCheck(bsmCheck);
-        bcr.writeStrToFileList(params.savePath, params.serialNumber, maversion,
+        bcr.writeStrToFileList(params.savePath, params.savePathAdd, params.serialNumber, maversion,
             bcr.getReportPrintableJson(), curDate);
     } break;
 
@@ -1081,21 +1079,21 @@ void JosephVeinsApp::writeListReport(MDReport reportBase, int version,
         OneMessageReport omr = OneMessageReport(reportBase);
         omr.setReportedBsm(*bsm);
         omr.setReportedCheck(bsmCheck);
-        omr.writeStrToFileList(params.savePath, params.serialNumber, maversion,
+        omr.writeStrToFileList(params.savePath, params.savePathAdd, params.serialNumber, maversion,
             omr.getReportPrintableJson(), curDate);
     } break;
     case reportTypes::EvidenceReport: {
         EvidenceReport evr = EvidenceReport(reportBase);
         if (myBsmNum > 0) {
             evr.addEvidence(myBsm[0], bsmCheck, *bsm, &detectedNodes);
-            evr.writeStrToFileList(params.savePath, params.serialNumber, maversion,
+            evr.writeStrToFileList(params.savePath, params.savePathAdd, params.serialNumber, maversion,
                 evr.getReportPrintableJson(), curDate);
         }
         else {
             OneMessageReport omr = OneMessageReport(reportBase);
             omr.setReportedBsm(*bsm);
             omr.setReportedCheck(bsmCheck);
-            omr.writeStrToFileList(params.savePath, params.serialNumber, maversion,
+            omr.writeStrToFileList(params.savePath, params.savePathAdd, params.serialNumber, maversion,
                 omr.getReportPrintableJson(), curDate);
         }
     } break;
@@ -1115,7 +1113,7 @@ void JosephVeinsApp::writeListReport(MDReport reportBase, int version,
             ProtocolReport hir = ProtocolReport(reportBase);
             hir.addEvidence(myBsm[0], bsmCheck, *bsm, &detectedNodes,
                 simTime().dbl(), params.InitialHistory, version);
-            hir.writeStrToFileList(params.savePath, params.serialNumber, maversion,
+            hir.writeStrToFileList(params.savePath, params.savePathAdd, params.serialNumber, maversion,
                 hir.getReportPrintableJson(), curDate);
         }
     } break;
@@ -1209,7 +1207,7 @@ void JosephVeinsApp::writeMdBsm(std::string version, BsmCheck bsmCheck,
     bsmPrint.setReceiverPseudo(myPseudonym);
     bsmPrint.setBsm(*bsm);
     bsmPrint.setBsmCheck(bsmCheck);
-    bsmPrint.writeStrToFile(params.savePath, params.serialNumber, version,
+    bsmPrint.writeStrToFile(params.savePath, params.savePathAdd, params.serialNumber, version,
         bsmPrint.getBsmPrintableJson(), curDate);
 }
 
@@ -1221,7 +1219,7 @@ void JosephVeinsApp::writeMdListBsm(std::string version, BsmCheck bsmCheck,
     bsmPrint.setReceiverPseudo(myPseudonym);
     bsmPrint.setBsm(*bsm);
     bsmPrint.setBsmCheck(bsmCheck);
-    bsmPrint.writeStrToFileList(params.savePath, params.serialNumber, version,
+    bsmPrint.writeStrToFileList(params.savePath, params.savePathAdd, params.serialNumber, version,
         bsmPrint.getBsmPrintableJson(), curDate);
 }
 
@@ -1231,7 +1229,7 @@ void JosephVeinsApp::writeSelfBsm(BasicSafetyMessage bsm)
     bsmPrint.setReceiverId(myId);
     bsmPrint.setReceiverPseudo(myPseudonym);
     bsmPrint.setBsm(bsm);
-    bsmPrint.writeSelfStrToFile(params.savePath, params.serialNumber,
+    bsmPrint.writeSelfStrToFile(params.savePath, params.savePathAdd, params.serialNumber,
         bsmPrint.getSelfBsmPrintableJson(myVType), curDate);
 }
 
@@ -1241,7 +1239,7 @@ void JosephVeinsApp::writeSelfListBsm(BasicSafetyMessage bsm)
     bsmPrint.setReceiverId(myId);
     bsmPrint.setReceiverPseudo(myPseudonym);
     bsmPrint.setBsm(bsm);
-    bsmPrint.writeSelfStrToFileList(params.savePath, params.serialNumber,
+    bsmPrint.writeSelfStrToFileList(params.savePath, params.savePathAdd, params.serialNumber,
         bsmPrint.getSelfBsmPrintableJson(myVType), curDate);
 }
 
@@ -1346,12 +1344,12 @@ void JosephVeinsApp::handleReportProtocol(bool lastTimeStep)
                     params.CollectionPeriod, 1);
 
                 if (params.writeReportsV1 && myBsmNum > 0) {
-                    hir.writeStrToFile(params.savePath, params.serialNumber, "V1",
+                    hir.writeStrToFile(params.savePath, params.savePathAdd, params.serialNumber, "V1",
                         hir.getReportPrintableJson(), curDate);
                 }
 
                 if (params.writeListReportsV1 && myBsmNum > 0) {
-                    hir.writeStrToFileList(params.savePath, params.serialNumber, "V1",
+                    hir.writeStrToFileList(params.savePath, params.savePathAdd, params.serialNumber, "V1",
                         hir.getReportPrintableJson(), curDate);
                 }
 
@@ -1418,12 +1416,12 @@ void JosephVeinsApp::handleReportProtocol(bool lastTimeStep)
                     params.CollectionPeriod, 2);
 
                 if (params.writeReportsV2 && myBsmNum > 0) {
-                    hir.writeStrToFile(params.savePath, params.serialNumber, "V2",
+                    hir.writeStrToFile(params.savePath, params.savePathAdd, params.serialNumber, "V2",
                         hir.getReportPrintableJson(), curDate);
                 }
 
                 if (params.writeListReportsV2 && myBsmNum > 0) {
-                    hir.writeStrToFileList(params.savePath, params.serialNumber, "V2",
+                    hir.writeStrToFileList(params.savePath, params.savePathAdd, params.serialNumber, "V2",
                         hir.getReportPrintableJson(), curDate);
                 }
 

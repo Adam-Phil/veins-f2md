@@ -56,7 +56,7 @@ public:
     void resetAll();
     void getVarThrePrintable(char* outStr, bool printOut);
     void writeFile(std::string path, char* printStr);
-    void saveFile(std::string path, std::string serial, bool printOut);
+    void saveFile(std::string path, std::string pathAdd, std::string serial, bool printOut);
 };
 
 #endif
