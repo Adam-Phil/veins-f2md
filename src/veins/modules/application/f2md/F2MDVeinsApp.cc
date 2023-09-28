@@ -29,18 +29,23 @@ std::set<std::string> split(std::string s, std::string delimiter)
     return res;
 }
 
-void JosephVeinsApp::adjustSavePath(std::string checkType, int appType)
+std::string JosephVeinsApp::getSavePathAdd(std::string checkType, int appType)
 {
-    params.savePath = params.savePath + "_1_";
-    return;
-    params.savePath = params.savePath + "_" + checkType;
+    std::string add = "";
+    int stripCheckStart = checkType.length() - 6;
+    std::string strippedCheckType = checkType.replace(stripCheckStart, 6, "");
+    add = add + checkType;
     if (appType == 5) {
-        std::string mlType = typeRetriever.GetMlType();
-        params.savePath = params.savePath + "_" + mlType;
+        std::string mlType = mlTypeRetriever.GetMlType();
+        add = add + "_" + mlType;
     }
     else {
-        params.savePath = params.savePath + "_" + mdAppTypes::AppNames[appType];
+        std::string appSType = mdAppTypes::AppNames[appType];
+        int stripAppStart = appSType.length() - 3;
+        std::string strippedAppType = appSType.replace(stripAppStart, 3, "");
+        add = add + "_" + strippedAppType;
     }
+    return add;
 }
 
 void JosephVeinsApp::initialize(int stage)
@@ -52,7 +57,6 @@ void JosephVeinsApp::initialize(int stage)
 
         params.serialNumber = par("serialNumber").stdstringValue();
         params.savePath = par("savePath").stdstringValue();
-
         params.veremiConf = par("veremiConf");
         params.randomConf = par("randomConf");
         params.variableConf = par("variableConf");
@@ -95,11 +99,14 @@ void JosephVeinsApp::initialize(int stage)
 
         params.checksVersionV1 = mdChecksVersionTypes::intChecksVersion[par("checksVersionV1").intValue()];
         params.checksVersionV2 = mdChecksVersionTypes::intChecksVersion[par("checksVersionV2").intValue()];
-        std::string checkNameV1 = mdChecksVersionTypes::ChecksVersionNames[par("checksVersionV1").intValue()];
 
         int appTypeV1 = par("appTypeV1").intValue();
         params.appTypeV1 = mdAppTypes::intApp[appTypeV1];
         params.appTypeV2 = mdAppTypes::intApp[par("appTypeV2").intValue()];
+
+        std::string checkNameV1 = mdChecksVersionTypes::ChecksVersionNames[par("checksVersionV1").intValue()];
+        params.savePathAdd = getSavePathAdd(checkNameV1, appTypeV1);
+        checkTypePutter.PutCheckType(checkNameV1);
 
         params.writeSelfMsg = par("writeSelfMsg");
         params.writeListSelfMsg = par("writeListSelfMsg");
@@ -197,7 +204,6 @@ void JosephVeinsApp::initialize(int stage)
         params.CollectionPeriod = par("CollectionPeriod");
         params.UntolerancePeriod = par("UntolerancePeriod");
         //------ Report Parameters -- End
-        adjustSavePath(checkNameV1, appTypeV1);
         linkControl.initialize(&params, traci);
 
         linkInit = true;
@@ -231,8 +237,9 @@ void JosephVeinsApp::initialize(int stage)
         if ((stat(params.savePath.c_str(), &info) != 0) || !(info.st_mode & S_IFDIR)) {
             mkdir(params.savePath.c_str(), 0777);
         }
-
-        // F2MD init
+        std::string checkNameV1 = mdChecksVersionTypes::ChecksVersionNames[par("checksVersionV1").intValue()];
+        int appTypeV1 = par("appTypeV1").intValue();
+        adjustSavePath(checkNameV1, appTypeV1);
     }
     else if (stage == 1) {
         EV << "Initializing " << par("appName").stringValue() << std::endl;

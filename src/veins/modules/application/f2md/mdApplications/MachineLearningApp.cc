@@ -46,7 +46,7 @@ bool MachineLearningApp::CheckNodeForReport(unsigned long myPseudonym,
     s.erase(std::remove(s.begin(), s.end(), '\n'), s.end());
     s.erase(std::remove(s.begin(), s.end(), ' '), s.end());
 
-    std::string response = httpr.Request(s);
+    std::string response = httpr.Request(s, "POST");
 
     //std::cout << "response:" << response << "\n";
 

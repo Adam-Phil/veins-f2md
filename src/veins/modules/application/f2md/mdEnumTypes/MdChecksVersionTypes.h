@@ -31,7 +31,6 @@ static const mdChecksVersionTypes::ChecksVersion intChecksVersion[] = {
 
 static_assert(sizeof(mdChecksVersionTypes::intChecksVersion)/sizeof(mdChecksVersionTypes::ChecksVersion) == mdChecksVersionTypes::SIZE_OF_ENUM
         , "sizes dont match");
-
 }
 
 #endif

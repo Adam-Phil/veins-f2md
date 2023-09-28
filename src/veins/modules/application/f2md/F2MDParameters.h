@@ -37,6 +37,7 @@ public:
     //Simulation Parameters
     std::string serialNumber = "IRT-DEMO";
     std::string savePath = "../../../../mdmSave/";
+    std::string savePathAdd = "";
 
     bool veremiConf = true;
     bool randomConf = false;

@@ -68,8 +68,7 @@ std::string HTTPRequest::Request(std::string requestArg, std::string type) {
     /* first what are we going to send and where are we going to send it? */
     int portno = portInt;
     const char *host = hostStr.c_str();
-    char *message_fmt_old = "xxxx %s HTTP/1.0\r\n\r\n";
-    std::string message_fmt_s(message_fmt_old);
+    std::string message_fmt_s = "xxxx %s HTTP/1.0\r\n\r\n";
     const char *message_fmt = message_fmt_s.replace(0,4,type).c_str();
 
 
