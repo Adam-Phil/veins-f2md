@@ -175,7 +175,7 @@ std::string MDReport::getBaseReportJson(std::string reportTypeStr) {
     return jw.getJsonElement("Metadata");
 }
 
-bool MDReport::writeStrToFile(const std::string strFileCnst, std::string pathAdd,
+bool MDReport::writeStrToFile(const std::string strFileCnst, const std::string pathAdd,
         const std::string serial, const std::string version,
         const std::string outStr,const std::string curDate) {
 
@@ -222,7 +222,7 @@ bool MDReport::writeStrToFile(const std::string strFileCnst, std::string pathAdd
 
 }
 
-bool MDReport::writeStrToFileList(const std::string strFileCnst, std::string pathAdd,
+bool MDReport::writeStrToFileList(const std::string strFileCnst, const std::string pathAdd,
         const std::string serial, const std::string version,
         const std::string outStr,const std::string curDate) {
     std::string dirnameStr = strFileCnst + serial + "/MDReportsList_"+version+"_"+ curDate;

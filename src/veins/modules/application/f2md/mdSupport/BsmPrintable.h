@@ -37,36 +37,33 @@ private:
     std::string getSelfBsmPrintHead(std::string myVType);
 
 public:
-
     BsmPrintable();
     void setBsmCheck(BsmCheck check);
     void setBsm(BasicSafetyMessage bsm);
     void setReceiverId(LAddress::L2Type receiverId);
     void setReceiverPseudo(unsigned long receiverPseudo);
 
-
     std::string getBsmPrintableXml();
     std::string getBsmPrintableJson();
 
-    bool writeStrToFile(const std::string strFileCnst, const std::string serial, std::string pathAdd,
-            const std::string version, const std::string outStr,
-            const std::string curDate);
-
+    bool writeStrToFile(const std::string strFileCnst, const std::string pathAdd,
+        const std::string serial,
+        const std::string version, const std::string outStr,
+        const std::string curDate);
 
     std::string getSelfBsmPrintableJson(std::string myVType);
 
-    bool writeSelfStrToFile(const std::string strFileCnst, std::string pathAdd,
-            const std::string serial, const std::string outStr,
-            const std::string curDate);
+    bool writeSelfStrToFile(const std::string strFileCnst, const std::string pathAdd,
+        const std::string serial, const std::string outStr,
+        const std::string curDate);
 
-    bool writeSelfStrToFileList(const std::string strFileCnst, std::string pathAdd,
-            const std::string serial, const std::string outStr,
-            const std::string curDate);
+    bool writeSelfStrToFileList(const std::string strFileCnst, const std::string pathAdd,
+        const std::string serial, const std::string outStr,
+        const std::string curDate);
 
-    bool writeStrToFileList(const std::string strFileCnst, std::string pathAdd,
-            const std::string serial, const std::string version,
-            const std::string outStr, const std::string curDate);
-
+    bool writeStrToFileList(const std::string strFileCnst, const std::string pathAdd,
+        const std::string serial, const std::string version,
+        const std::string outStr, const std::string curDate);
 };
 
 #endif

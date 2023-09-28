@@ -151,7 +151,7 @@ std::string BsmPrintable::getBsmPrintHead() {
     return jw.getJsonElement("Metadata");
 }
 
-bool BsmPrintable::writeSelfStrToFile(const std::string strFileCnst, std::string pathAdd,
+bool BsmPrintable::writeSelfStrToFile(const std::string strFileCnst, const std::string pathAdd,
         const std::string serial,
         const std::string outStr, const std::string curDate) {
 
@@ -205,7 +205,7 @@ bool BsmPrintable::writeSelfStrToFile(const std::string strFileCnst, std::string
     return true;
 }
 
-bool BsmPrintable::writeSelfStrToFileList(const std::string strFileCnst, std::string pathAdd,
+bool BsmPrintable::writeSelfStrToFileList(const std::string strFileCnst, const std::string pathAdd,
         const std::string serial,
         const std::string outStr, const std::string curDate) {
 
@@ -258,7 +258,7 @@ bool BsmPrintable::writeSelfStrToFileList(const std::string strFileCnst, std::st
 }
 
 
-bool BsmPrintable::writeStrToFile(const std::string strFileCnst, std::string pathAdd,
+bool BsmPrintable::writeStrToFile(const std::string strFileCnst, const std::string pathAdd,
         const std::string serial, const std::string version,
         const std::string outStr, const std::string curDate) {
 
@@ -312,7 +312,7 @@ bool BsmPrintable::writeStrToFile(const std::string strFileCnst, std::string pat
 }
 
 
-bool BsmPrintable::writeStrToFileList(const std::string strFileCnst, std::string pathAdd, 
+bool BsmPrintable::writeStrToFileList(const std::string strFileCnst, const std::string pathAdd, 
         const std::string serial, const std::string version,
         const std::string outStr, const std::string curDate) {
 
