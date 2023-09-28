@@ -37,15 +37,15 @@ std::string JosephVeinsApp::getSavePathAdd(std::string checkType, int appType)
     add = add + checkType;
     if (appType == 5) {
         std::string mlType = mlTypeRetriever.GetMlType();
-        add = add + "_" + mlType;
+        add = add + "-" + mlType;
     }
     else {
         std::string appSType = mdAppTypes::AppNames[appType];
         int stripAppStart = appSType.length() - 3;
         std::string strippedAppType = appSType.replace(stripAppStart, 3, "");
-        add = add + "_" + strippedAppType;
+        add = add + "-" + strippedAppType;
     }
-    add = add + "/";
+    add = add + "-";
     return add;
 }
 
@@ -107,6 +107,7 @@ void JosephVeinsApp::initialize(int stage)
 
         std::string checkNameV1 = mdChecksVersionTypes::ChecksVersionNames[par("checksVersionV1").intValue()];
         params.savePathAdd = getSavePathAdd(checkNameV1, appTypeV1);
+        std::cout << "\n********************" << params.savePathAdd << "*******************\n";
         checkTypePutter.PutCheckType(checkNameV1);
 
         params.writeSelfMsg = par("writeSelfMsg");
@@ -440,16 +441,16 @@ void JosephVeinsApp::initialize(int stage)
                 myAttackType = params.LOCAL_ATTACK_TYPE;
             }
 
-            std::cout
-                << "=+#=+#=+#=+#=+#=+#=+#=+#+#=+#=+#=+#=+#=+#=+#=+#=+#=+#=+#=+#=+# "
-                << "\n";
-            std::cout
-                << "=+#=+#=+#=+#=+#=+#=+#=+# NEW ATTACKER =+#=+#=+#=+#=+#=+#=+#=+# "
-                << myPseudonym << " : "
-                << attackTypes::AttackNames[myAttackType] << "\n";
-            std::cout
-                << "=+#=+#=+#=+#=+#=+#=+#=+#+#=+#=+#=+#=+#=+#=+#=+#=+#=+#=+#=+#=+# "
-                << "\n";
+            // std::cout
+            //     << "=+#=+#=+#=+#=+#=+#=+#=+#+#=+#=+#=+#=+#=+#=+#=+#=+#=+#=+#=+#=+# "
+            //     << "\n";
+            // std::cout
+            //     << "=+#=+#=+#=+#=+#=+#=+#=+# NEW ATTACKER =+#=+#=+#=+#=+#=+#=+#=+# "
+            //     << myPseudonym << " : "
+            //     << attackTypes::AttackNames[myAttackType] << "\n";
+            // std::cout
+            //     << "=+#=+#=+#=+#=+#=+#=+#=+#+#=+#=+#=+#=+#=+#=+#=+#=+#=+#=+#=+#=+# "
+            //     << "\n";
 
             mdAttack = MDAttack();
 
@@ -820,13 +821,12 @@ void JosephVeinsApp::LocalMisbehaviorDetection(BasicSafetyMessage* bsm,
             if ((simTime().dbl() - deltaTVS1) > params.PRINT_PERIOD) {
                 deltaTVS1 = simTime().dbl();
                 printOut = true;
-                std::cout << "-_-_-_-_-_-_-_-_-_-_-_-_-"
-                          << " meanTimeV1:"
-                          << meanTimeV1 << " μs " << numTimeV1 << "\n";
+                // std::cout << "-_-_-_-_-_-_-_-_-_-_-_-_-"
+                //           << " meanTimeV1:"
+                //           << meanTimeV1 << " μs " << numTimeV1 << "\n";
             }
 
             deltaTV1 = simTime().dbl();
-
             if ((simTime().dbl() > params.START_SAVE) && params.SaveStatsV1) {
 
                 AppV1->saveLine(params.savePath, params.savePathAdd, params.serialNumber,
@@ -972,9 +972,9 @@ void JosephVeinsApp::LocalMisbehaviorDetection(BasicSafetyMessage* bsm,
             if ((simTime().dbl() - deltaTVS2) > params.PRINT_PERIOD) {
                 deltaTVS2 = simTime().dbl();
                 printOut = true;
-                std::cout << "-_-_-_-_-_-_-_-_-_-_-_-_-"
-                          << " meanTimeV2:"
-                          << meanTimeV2 << " μs " << numTimeV2 << "\n";
+                // std::cout << "-_-_-_-_-_-_-_-_-_-_-_-_-"
+                //           << " meanTimeV2:"
+                //           << meanTimeV2 << " μs " << numTimeV2 << "\n";
             }
 
             deltaTV2 = simTime().dbl();
@@ -1008,6 +1008,8 @@ void JosephVeinsApp::LocalMisbehaviorDetection(BasicSafetyMessage* bsm,
 void JosephVeinsApp::writeReport(MDReport reportBase, int version,
     std::string maversion, BsmCheck bsmCheck, BasicSafetyMessage* bsm)
 {
+
+    std::cout << "\n********************" << params.savePathAdd << "*******************\n";
     switch (myReportType) {
     case reportTypes::BasicCheckReport: {
         BasicCheckReport bcr = BasicCheckReport(reportBase);
@@ -1385,8 +1387,8 @@ void JosephVeinsApp::handleReportProtocol(bool lastTimeStep)
                                                            pseudosList[var])
                                               ->getLatestBsmCheckAddr(2);
                 if (reportedBsm->getSenderPseudonym() == 0) {
-                    std::cout << pseudosList[var] << "\n";
-                    std::cout << "Problem Found \n";
+                    // std::cout << pseudosList[var] << "\n";
+                    // std::cout << "Problem Found \n";
                     exit(0);
                 }
 
