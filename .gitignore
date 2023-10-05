@@ -8,8 +8,6 @@ src/**/*_m.cc
 doc/doxy
 doc/neddoc
 
-/run
-
 /out
 
 /.settings
