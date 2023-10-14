@@ -108,7 +108,9 @@ void JosephVeinsApp::initialize(int stage)
         std::string checkNameV1 = mdChecksVersionTypes::ChecksVersionNames[par("checksVersionV1").intValue()];
         params.savePathAdd = getSavePathAdd(checkNameV1, appTypeV1);
         std::cout << "\n********************" << params.savePathAdd << "*******************\n";
-        checkTypePutter.PutCheckType(checkNameV1);
+        if (appTypeV1 == 5) {
+            checkTypePutter.PutCheckType(checkNameV1);
+        }
 
         params.writeSelfMsg = par("writeSelfMsg");
         params.writeListSelfMsg = par("writeListSelfMsg");
