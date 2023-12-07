@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <!--debug config-->
+    <copy file="EdgeIRTSystemX.net.xml"/>
+    <copy file="EdgeIRTSystemX.0.rou.xml"/>
+    <copy file="EdgeIRTSystemX.1.rou.xml"/>
+    <copy file="EdgeIRTSystemX.poly.xml"/>
+    <copy file="gui-settings.cfg.xml"/>
+    <copy file="type.add.xml"/>
+    <copy file="EdgeIRTSystemX.sumo.cfg" type="config"/>
+</launch>
