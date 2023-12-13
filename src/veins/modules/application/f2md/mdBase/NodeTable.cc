@@ -94,9 +94,9 @@ NodeHistory* NodeTable::getNodeHistoryAddr(unsigned long nodePseudo) {
             return &nodeHistoryList[var];
         }
     }
-    std::cout<<"nodePseudonym:"<<nodePseudo<<"\n";
-    std::cout<<"ERROR: getNodeHistoryAddr no node found \n";
-    exit(0);
+    //std::cout<<"nodePseudonym:"<<nodePseudo<<"\n";
+    //std::cout<<"ERROR: getNodeHistoryAddr no node found \n";
+    //exit(0);
 
     return &nullNode;
 }
@@ -107,9 +107,9 @@ MDMHistory* NodeTable::getMDMHistoryAddr(unsigned long nodePseudonym) {
             return &mdmHistoryList[var];
         }
     }
-    std::cout<<"nodePseudonym:"<<nodePseudonym<<"\n";
-    std::cout<<"ERROR: getMDMHistoryAddr no node found \n";
-    exit(0);
+    //std::cout<<"nodePseudonym:"<<nodePseudonym<<"\n";
+    //std::cout<<"ERROR: getMDMHistoryAddr no node found \n";
+    //exit(0);
 
     return &nullMDMNode;
 }
