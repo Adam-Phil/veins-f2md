@@ -27,19 +27,16 @@ enum App {
 
     SIZE_OF_ENUM
 };
+static const char* AppNames[] = {"ThresholdApp", "AggregationApp",
+    "BehavioralApp", "CooperativeApp", "ExperiApp", "MachineLearningApp", "KalmanApp"};
 
-static const char* AppNames[] = { "ThresholdApp", "AggregationApp",
-        "CooperativeApp", "BehavioralApp", "ExperiApp", "MachineLearningApp", "KalmanApp" };
+static_assert(sizeof(mdAppTypes::AppNames) / sizeof(char*) == mdAppTypes::SIZE_OF_ENUM, "sizes dont match");
 
-static_assert(sizeof(mdAppTypes::AppNames)/sizeof(char*) == mdAppTypes::SIZE_OF_ENUM
-        , "sizes dont match");
+static const mdAppTypes::App intApp[] = {ThresholdApp, AggregationApp,
+    BehavioralApp, CooperativeApp, ExperiApp, MachineLearningApp, KalmanApp};
 
-static const mdAppTypes::App intApp[] = { ThresholdApp, AggregationApp,
-        BehavioralApp, CooperativeApp, ExperiApp, MachineLearningApp, KalmanApp };
+static_assert(sizeof(mdAppTypes::intApp) / sizeof(mdAppTypes::App) == mdAppTypes::SIZE_OF_ENUM, "sizes dont match");
 
-static_assert(sizeof(mdAppTypes::intApp)/sizeof(mdAppTypes::App) == mdAppTypes::SIZE_OF_ENUM
-        , "sizes dont match");
-
-}
+} // namespace mdAppTypes
 
 #endif
